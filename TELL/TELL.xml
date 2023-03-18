@@ -1,0 +1,1979 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TELL</name>
+    </assembly>
+    <members>
+        <member name="T:TELL.Goal">
+            <summary>
+            A Goal represents a predicate applied to arguments, e.g. p["a"], p[variable], etc.
+            Goals are used as the arguments to Prover.Prove, but also as the Head and Body of Rules.
+            </summary>
+        </member>
+        <member name="F:TELL.Goal.Predicate">
+            <summary>
+            Predicate being called
+            </summary>
+        </member>
+        <member name="F:TELL.Goal.Arguments">
+            <summary>
+            Arguments to the predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Goal.#ctor(TELL.Predicate,TELL.Term[])">
+            <summary>
+            Make a new goal object
+            </summary>
+        </member>
+        <member name="M:TELL.Goal.Fact">
+            <summary>
+            Add this goal as a rule in the predicate's list of rules, but without any subgoals.
+            The Head of the rule will be this Goal, and the Body will be empty.
+            </summary>
+        </member>
+        <member name="M:TELL.Goal.If(TELL.Goal[])">
+            <summary>
+            Add this goal as a rule in the predicate's list of rules, with the specified subgoals in its body.
+            So the Head of the rule will be this Goal and the Body will be the subgoals
+            </summary>
+            <param name="subgoals">Subgoals to include in the goal's body.</param>
+        </member>
+        <member name="M:TELL.Goal.op_LogicalNot(TELL.Goal)">
+            <summary>
+            Returns the negation of the specified goal
+            This will succeed if the goal fails, and fail if the goal succeeds.
+            </summary>
+            <param name="g">Goal to negate</param>
+            <returns>Negated goal</returns>
+        </member>
+        <member name="M:TELL.Goal.Instantiate(System.Collections.Generic.Dictionary{TELL.Term,TELL.Term})">
+            <summary>
+            Make a copy of this rule, replacing any arguments that appear in the Dictionary with their values in the hash table.
+            This is only called from Rule.Copy().
+            </summary>
+            <param name="vars">Mapping used to selectively rewrite arguments</param>
+            <returns></returns>
+        </member>
+        <member name="M:TELL.Goal.ToString">
+            <summary>
+            Convert the goal to a human-readable string, for purposes of printing.
+            </summary>
+        </member>
+        <member name="M:TELL.Goal.ToString(System.Text.StringBuilder)">
+            <summary>
+            Add the printed representation of the goal to this StringBuilder.
+            </summary>
+        </member>
+        <member name="P:TELL.Goal.DebugName">
+            <summary>
+            This is just so that this appears in human-readable form in the debugger
+            </summary>
+        </member>
+        <member name="P:TELL.Goal.IsTrue">
+            <summary>
+            Test if this goal is provable
+            </summary>
+        </member>
+        <member name="M:TELL.Goal.op_Implicit(TELL.Goal)~System.Boolean">
+            <summary>
+            Using a goal as a Boolean is interpreted as calling it and returning true if it succeeds.
+            </summary>
+        </member>
+        <member name="P:TELL.Goal.IsFalse">
+            <summary>
+            Test if this goal is provable, return false if so, and true if not.
+            </summary>
+        </member>
+        <member name="M:TELL.Goal.SolveFor``1(TELL.Var{``0})">
+            <summary>
+            Find the first solution to this goal and return the value of v from within it
+            </summary>
+            <typeparam name="T">Type of the variable we're solving for</typeparam>
+            <param name="v">Variable whose value we should return</param>
+            <returns>Value of the variable in the solution</returns>
+        </member>
+        <member name="M:TELL.Goal.SolveForAll``1(TELL.Var{``0})">
+            <summary>
+            Find all solutions to this goal, and collect the values of the specified variable in each
+            </summary>
+            <typeparam name="T">Value of the variable we're solving for</typeparam>
+            <param name="v">Variable to solve for</param>
+            <returns>All values found, including duplicate values</returns>
+        </member>
+        <member name="P:TELL.Goal.SolutionsUntyped">
+            <summary>
+            All solutions to this goal, as a sequence of tuples, each giving the argument values from one solution
+            </summary>
+        </member>
+        <member name="T:TELL.Goal`1">
+            <summary>
+            A goal (predicate call) for a one-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's argument</typeparam>
+        </member>
+        <member name="M:TELL.Goal`1.#ctor(TELL.Predicate,TELL.Term{`0})">
+            <summary>
+            Make a goal for a predicate with a given argument
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`1.Solutions">
+            <summary>
+            Find all solutions and return the values of the argument for each
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`1.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Goal`2">
+            <summary>
+            A goal (predicate call) for a two-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+        </member>
+        <member name="M:TELL.Goal`2.#ctor(TELL.Predicate,TELL.Term{`0},TELL.Term{`1})">
+            <summary>
+            Make a goal for a predicate with given arguments
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`2.Solutions">
+            <summary>
+            Find all solutions and return the values of the arguments for each as a sequence of tuples
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`2.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Goal`3">
+            <summary>
+            A goal (predicate call) for a three-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+        </member>
+        <member name="M:TELL.Goal`3.#ctor(TELL.Predicate,TELL.Term{`0},TELL.Term{`1},TELL.Term{`2})">
+            <summary>
+            Make a goal for a predicate with given arguments
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`3.Solutions">
+            <summary>
+            Find all solutions and return the values of the arguments for each as a sequence of tuples
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`3.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Goal`4">
+            <summary>
+            A goal (predicate call) for a four-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+        </member>
+        <member name="M:TELL.Goal`4.#ctor(TELL.Predicate,TELL.Term{`0},TELL.Term{`1},TELL.Term{`2},TELL.Term{`3})">
+            <summary>
+            Make a goal for a predicate with given arguments
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`4.Solutions">
+            <summary>
+            Find all solutions and return the values of the arguments for each as a sequence of tuples
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`4.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Goal`5">
+            <summary>
+            A goal (predicate call) for a five-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+        </member>
+        <member name="M:TELL.Goal`5.#ctor(TELL.Predicate,TELL.Term{`0},TELL.Term{`1},TELL.Term{`2},TELL.Term{`3},TELL.Term{`4})">
+            <summary>
+            Make a goal for a predicate with given arguments
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`5.Solutions">
+            <summary>
+            Find all solutions and return the values of the arguments for each as a sequence of tuples
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`5.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Goal`6">
+            <summary>
+            A goal (predicate call) for a six-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="T6">Type of the predicate's sixth argument</typeparam>
+        </member>
+        <member name="M:TELL.Goal`6.#ctor(TELL.Predicate,TELL.Term{`0},TELL.Term{`1},TELL.Term{`2},TELL.Term{`3},TELL.Term{`4},TELL.Term{`5})">
+            <summary>
+            Make a goal for a predicate with given arguments
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`6.Solutions">
+            <summary>
+            Find all solutions and return the values of the arguments for each as a sequence of tuples
+            </summary>
+        </member>
+        <member name="P:TELL.Goal`6.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.VariadicGoal`1">
+            <summary>
+            A goal for a variadic predicate (one that can take a variable number of arguments)
+            </summary>
+            <typeparam name="T">Type of the arguments</typeparam>
+        </member>
+        <member name="M:TELL.VariadicGoal`1.#ctor(TELL.Predicate,TELL.Term{`0}[])">
+            <summary>
+            Make a new goal given a predicate and argument list
+            </summary>
+        </member>
+        <member name="P:TELL.VariadicGoal`1.SolutionsUntyped">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Interpreter.CsvReader">
+            <summary>
+            Extremely simplistic CSV reader.  Doesn't handle embedded commas, quotes, or newlines in cells
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.CsvReader.ReadCsv(System.String)">
+            <summary>
+            Read a CSV file.
+            Returns the header line as an array of strings and the rest as an array of arrays of strings
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TELL.Interpreter.CsvReader.ConvertCell``1(System.String)">
+            <summary>
+            Convert a string representation of a value to a specific type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TELL.Interpreter.CsvReader.ConvertCellInternal(System.String,System.Type)">
+            <summary>
+            Convert a sting representation of a value to a specific type
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.CsvReader.DeclareParser(System.Type,System.Func{System.String,System.Object})">
+            <summary>
+            Provide a custom method for converting the string in a cell to a particular data type
+            </summary>
+            <param name="t">Type to be parsed</param>
+            <param name="parser">Function that will return the object given the string</param>
+        </member>
+        <member name="P:TELL.Interpreter.CsvReader.End">
+            <summary>
+            True if we're at the end of the stream
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.CsvReader.GetRow">
+            <summary>
+            Read a row from the spreadsheet.
+            </summary>
+            <returns>Array of column strings</returns>
+        </member>
+        <member name="M:TELL.Interpreter.CsvReader.ReadQuoted">
+            <summary>
+            Read a quoted column
+            This just reads into the string buffer.  We depend on the caller to move the string buffer into the row buffer.
+            </summary>
+        </member>
+        <member name="T:TELL.Interpreter.InstantiatedGoal">
+            <summary>
+            These are copies of Goals that have been filled in with fresh variables and the raw
+            C# objects for constants.
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.InstantiatedGoal.Predicate">
+            <summary>
+            Predicate to be called
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.InstantiatedGoal.Arguments">
+            <summary>
+            Arguments to the predicate; these are real values, not Term objects
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.InstantiatedGoal.Prove(TELL.Interpreter.Substitution,TELL.Interpreter.Prover.SuccessContinuation)">
+            <summary>
+            Try to prove this goal using the specified substitution
+            If successful, call the continuation with the resulting substitution and return
+            its result.  Continuations can be called multiple times for multiple successes.
+            </summary>
+            <param name="s">Variable substitution to use</param>
+            <param name="k">Continuation to call on success</param>
+            <returns>True if both this rule and the continuation are successful.</returns>
+        </member>
+        <member name="M:TELL.Interpreter.InstantiatedGoal.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Interpreter.InstantiatedRule">
+            <summary>
+            A copy of a Rule made for a specific call to that rule.
+            Copying the rule prevents multiple calls to the rule from sharing the same variables.
+            InstantiatedRules have InstantiatedGoals rather than normal Goals.  And InstantiatedGoals
+            are untyped and don't wrap constants in Constant objects
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.InstantiatedRule.Head">
+            <summary>
+            Goal this rule is used to prove
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.InstantiatedRule.Body">
+            <summary>
+            Subgoals that must be true to prove the Head
+            </summary>
+        </member>
+        <member name="T:TELL.Interpreter.Prover">
+            <summary>
+            Implements the algorithm for proving Goals using Rules
+            </summary>
+        </member>
+        <member name="T:TELL.Interpreter.Prover.PredicateImplementation">
+             <summary>
+             Type of methods used to try to prove instantiates of a particular predicate
+             Or, more properly, instantiates of goals whose predicate is the predicate in question.
+            
+             For Rule-based predicates, the implementation will be ProveUsingRules.  For primitives
+             it will be custom code or code generated using a wrapper from Primitives.
+             </summary>
+             <param name="g">Goal to prove</param>
+             <param name="s">Substitutions currently in effect</param>
+             <param name="k">Continuation to call if we're successful</param>
+             <returns>False if we fail, otherwise whatever k returns.</returns>
+        </member>
+        <member name="T:TELL.Interpreter.Prover.SuccessContinuation">
+            <summary>
+            A continuation is a method to call when a goal or subgoal is successfully proven.
+            Since proving can fill in values for variables, the prover will pass the continuation the
+            final Substitution used in the proof.
+            </summary>
+            <param name="newSubstitution"></param>
+            <returns>True if the continuation accepted the final Substitution.  If it's false, then the prover should try to backtrack.</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Prover.ProveUsingRules(TELL.Interpreter.InstantiatedGoal,TELL.Interpreter.Substitution,TELL.Interpreter.Prover.SuccessContinuation)">
+            <summary>
+            Try to prove goal given the specified substitution
+            </summary>
+            <param name="g">Goal to prove</param>
+            <param name="s">Variable substitutions in effect</param>
+            <param name="k">Success continuation to call with final substitutions</param>
+            <returns>True if successful and continuation returned true</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Prover.ProveUsingRule(TELL.Interpreter.InstantiatedGoal,TELL.Interpreter.InstantiatedRule,TELL.Interpreter.Substitution,TELL.Interpreter.Prover.SuccessContinuation)">
+            <summary>
+            Try to prove goal using the specified rule
+            This will work if the goal can be unified with the head of the rule and all the subgoals can
+            also be proven.
+            </summary>
+            <param name="g">Goal to prove</param>
+            <param name="r">Rule to try to use to prove it.</param>
+            <param name="s">Substitutions in effect</param>
+            <param name="k">Success continuation to call with final substitutions</param>
+            <returns>Successful and continuation returned true</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Prover.ProveSubgoals(TELL.Interpreter.InstantiatedRule,System.Int32,TELL.Interpreter.Substitution,TELL.Interpreter.Prover.SuccessContinuation)">
+            <summary>
+            Try to prove all the subgoals of the body of rule, starting at position index
+            </summary>
+            <param name="rule">Rule whose subgoals to prove</param>
+            <param name="index">position of the next subgoal in the body</param>
+            <param name="s">Substitutions in effect</param>
+            <param name="k">Success continuation</param>
+            <returns>True if everything worked and continuation returned true</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Prover.CanProve(TELL.Goal)">
+            <summary>
+            Try to prove goal.  Return true if successful, otherwise false
+            </summary>
+            <param name="g">goal to prove</param>
+            <returns>True if it was successful</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Prover.SolveFor``1(TELL.Var{``0},TELL.Goal)">
+            <summary>
+            Try to prove goal.  If successful, return the final value of the variable.  If not successful, throw an exception.
+            </summary>
+            <param name="v">Variable to find the value of</param>
+            <param name="g">Goal to try to prove; it should include the variable as one of its arguments.</param>
+            <returns>Final value of the variable</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Prover.SolveForAll``1(TELL.Var{``0},TELL.Goal)">
+            <summary>
+            Find *all* the solutions to the goal and return the list of values of the variable in each one.
+            </summary>
+            <param name="v">Variable to find the value of</param>
+            <param name="g">Goal to prove.  It should include the variable as an argument</param>
+            <returns>List of all values of the variable for all solutions.  If there are no solutions, the list will be empty.</returns>
+        </member>
+        <member name="T:TELL.Interpreter.Rule">
+            <summary>
+            An if/then rule that can be used to prove a predicate.
+            
+            It states that if all the subgoals in the Body are true, then the goal in the Head must be true.
+            Therefore, if you you want to prove the goal in the Head, try to prove the subgoals in the body.
+            The Body can be empty, in which case this rule says the Head is always true (is a "fact").
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.Rule.Head">
+            <summary>
+            Goal that this rule can be used to prove
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.Rule.Body">
+            <summary>
+            Subgoals that you have to prove in order to prove the Head
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.Rule.Variables">
+            <summary>
+            Saved list of all the variable names appearing in the Head and Body
+            These are needed because every time we try this rule, we need to make a copy
+            of it with fresh Variable objects.  Having this list makes the copying process easier
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.Rule.#ctor(TELL.Goal,TELL.Goal[])">
+            <summary>
+            Make a new rule for proving a goal
+            </summary>
+            <param name="head">Goal this can prove</param>
+            <param name="body">Subgoals needed to prove the goal</param>
+        </member>
+        <member name="M:TELL.Interpreter.Rule.Instantiate">
+             <summary>
+             Make a copy of the rule, replacing all the strings that look like variable names (e.g. "?x")
+             with actual variables.  The copies are InstantiatedRules rather than Rules and they contain
+             InstantiatedGoals.  This removes the Term wrappers around constants.
+            
+             We need to use a new copy of the rule every time we try to use it to prove something,
+             otherwise things break when we have rules that are used more than once in a proof
+             (e.g. if there's recursion).
+             </summary>
+        </member>
+        <member name="P:TELL.Interpreter.Rule.DebugName">
+            <summary>
+            This is just here so the Debugger knows how to display the rule in human-readable format.
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.Rule.ToString">
+            <summary>
+            Convert the rule to a human-readable string
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.Rule.ToString(System.Text.StringBuilder)">
+            <summary>
+            Print the rule in human-readable format to the StringBuilder
+            </summary>
+        </member>
+        <member name="T:TELL.Interpreter.Substitution">
+             <summary>
+             Represents a substitution of values for Variables.  It's basically just a dictionary.
+             If the Variable's value is another Variable, then its "real" value is the second Variable's
+             value, whatever that might be.  That the second variable might not have a value, in which
+             case all we know is the two variables are equal.
+            
+             The substitution is represented as a linked list, so we can easily add new bindings to it
+             without overwriting the original Substitution.  So a Substitution object contains one binding
+             of one Variable, and a pointer to another Substitution (which could be null).
+             </summary>
+        </member>
+        <member name="F:TELL.Interpreter.Substitution.Variable">
+            <summary>
+            Variable we're giving a value to
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.Substitution.Value">
+            <summary>
+            Value we're giving to the variable
+            </summary>
+        </member>
+        <member name="F:TELL.Interpreter.Substitution.Next">
+            <summary>
+            The remaining bindings in the substitution
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.Substitution.#ctor(System.Object,System.Object,TELL.Interpreter.Substitution)">
+            <summary>
+            Extend a substitution with an additional variable binding
+            </summary>
+            <param name="variable">Variable to give a value to</param>
+            <param name="value">Value to give to the variable</param>
+            <param name="next">Substitution we're adding the binding to (possibly null)</param>
+        </member>
+        <member name="M:TELL.Interpreter.Substitution.Lookup(TELL.Interpreter.Substitution,TELL.Term,System.Object@)">
+            <summary>
+            If the Substitution has a binding for the variable, then return true and output its value.
+            Otherwise return false.
+            </summary>
+            <param name="substitution">Substitution to check</param>
+            <param name="variable">Variable to find a value for</param>
+            <param name="value">Output argument to write the value to</param>
+            <returns>True if the variable has a value in this substitution</returns>
+        </member>
+        <member name="M:TELL.Interpreter.Substitution.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.Interpreter.Unifier">
+            <summary>
+            Methods to implement unification of variables
+            </summary>
+        </member>
+        <member name="M:TELL.Interpreter.Unifier.Dereference(System.Object,TELL.Interpreter.Substitution)">
+             <summary>
+             Return the final value of a variable within a substitution.  It's defined as follows (constant
+             here just means anything other than a Variable):
+             - Dereference(constant, subst) = constant
+             - Dereference(variable, subst) = Dereference(variable's value in subst, subst)
+            
+             Note that this means Dereference will only ever return a constant or a variable that doesn't
+             have a value in the substitution, aka an unbound variable.
+             </summary>
+        </member>
+        <member name="M:TELL.Interpreter.Unifier.DereferenceToConstant``1(System.Object,TELL.Interpreter.Substitution)">
+            <summary>
+            Find the value of the first argument given the substitution, and cast it to the specified type
+            </summary>
+            <typeparam name="T">Expected type</typeparam>
+            <param name="constantOrVariable">Value to dereference</param>
+            <param name="subst">Substitution</param>
+            <returns>Value</returns>
+            <exception cref="T:System.Exception">If value is of the wrong type or is an unbound variable</exception>
+        </member>
+        <member name="M:TELL.Interpreter.Unifier.DereferenceToConstant``1(System.Object,TELL.Interpreter.Substitution,System.String,System.Int32)">
+            <summary>
+            Find the value of the first argument given the substitution, and cast it to the specified type
+            </summary>
+            <typeparam name="T">Expected type</typeparam>
+            <param name="constantOrVariable">Value to dereference</param>
+            <param name="subst">Substitution</param>
+            <param name="predicateName">Name of the predicate being executed</param>
+            <param name="argNumber">Position of the argument to the predicate that we're dereferencing</param>
+            <returns>Value</returns>
+            <exception cref="T:System.Exception">If value is of the wrong type or is an unbound variable</exception>
+        </member>
+        <member name="M:TELL.Interpreter.Unifier.Unify(System.Object,System.Object,TELL.Interpreter.Substitution,TELL.Interpreter.Substitution@)">
+             <summary>
+             Test if it's possible to make the dereferenced versions of the two values the same, possibly by extending
+             the substitution.  Output the Substitution that makes them the same.  If the dereferenced versions are already
+             the same, then the unifiedSubst will just be the original one.  If they're not the same, but one of them is
+             a variable, then the unifiedSubst will be the original subst extended with the variable set to the other
+             dereferenced value.
+            
+             If the dereferenced values are different constants, they can't be made the same, and unify should return false.
+             </summary>
+             <param name="a">The first value to compare</param>
+             <param name="b">The second value to compare</param>
+             <param name="subst">The substitution currently in use</param>
+             <param name="unifyingSubst">The extension of subst that makes a and b the same (this may just be the original subst)</param>
+             <returns></returns>
+        </member>
+        <member name="M:TELL.Interpreter.Unifier.UnifyArrays(System.Object[],System.Object[],TELL.Interpreter.Substitution,TELL.Interpreter.Substitution@)">
+            <summary>
+            Check if a[0] can be unified with b[0], a[1] with b[1], etc.  Output the substitution needed to make
+            each pair unify.
+            </summary>
+        </member>
+        <member name="T:TELL.Language">
+            <summary>
+            Primitive predicates
+            These are implemented directly in C# code rather than through interpreted rules
+            </summary>
+        </member>
+        <member name="M:TELL.Language.Constant``1(``0)">
+            <summary>
+            Change a C# value into a constant term.  All arguments to goals have to be passed as terms.
+            Normally, C# values are converted to terms automatically by implicit conversions, but once in
+            a while, C# type inference fails and you have to do it manually.
+            </summary>
+            <typeparam name="T">Type of the term</typeparam>
+            <param name="value">Value to be passed to the predicate</param>
+            <returns></returns>
+        </member>
+        <member name="M:TELL.Language.Predicate``1(System.String,TELL.Var{``0})">
+            <summary>
+            Make a new predicate to be defined by a set of If() rules.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="v">Variable representing the first argument.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``2(System.String,TELL.Var{``0},TELL.Var{``1})">
+            <summary>
+            Make a new predicate to be defined by a set of If() rules.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="v1">Variable representing the first argument.</param>
+            <param name="v2">Variable representing the second argument.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``3(System.String,TELL.Var{``0},TELL.Var{``1},TELL.Var{``2})">
+            <summary>
+            Make a new predicate to be defined by a set of If() rules.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="v1">Variable representing the first argument.</param>
+            <param name="v2">Variable representing the second argument.</param>
+            <param name="v3">Variable representing the third argument.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``4(System.String,TELL.Var{``0},TELL.Var{``1},TELL.Var{``2},TELL.Var{``3})">
+            <summary>
+            Make a new predicate to be defined by a set of If() rules.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="v1">Variable representing the first argument.</param>
+            <param name="v2">Variable representing the second argument.</param>
+            <param name="v3">Variable representing the third argument.</param>
+            <param name="v4">Variable representing the fourth argument.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``5(System.String,TELL.Var{``0},TELL.Var{``1},TELL.Var{``2},TELL.Var{``3},TELL.Var{``4})">
+            <summary>
+            Make a new predicate to be defined by a set of If() rules.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="v1">Variable representing the first argument.</param>
+            <param name="v2">Variable representing the second argument.</param>
+            <param name="v3">Variable representing the third argument.</param>
+            <param name="v4">Variable representing the fourth argument.</param>
+            <param name="v5">Variable representing the fifth argument.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``6(System.String,TELL.Var{``0},TELL.Var{``1},TELL.Var{``2},TELL.Var{``3},TELL.Var{``4},TELL.Var{``5})">
+            <summary>
+            Make a new predicate to be defined by a set of If() rules.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="T6">Type of the predicate's fifth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="v1">Variable representing the first argument.</param>
+            <param name="v2">Variable representing the second argument.</param>
+            <param name="v3">Variable representing the third argument.</param>
+            <param name="v4">Variable representing the fourth argument.</param>
+            <param name="v5">Variable representing the fifth argument.</param>
+            <param name="v6">Variable representing the sixth argument.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``1(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new predicate to be defined by a continuation-passing C# method.
+            This is the most complicated, but most general way to make a primitive predicate.
+            If you're implementing a simple function or enumerator, use one of specialized methods
+            for implementing those.  Otherwise, it's easier to make an implementation function by
+            calling the ModeDispatch function.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="implementation">C# code that implements the driver for this predicate</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``2(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new predicate to be defined by a continuation-passing C# method.
+            This is the most complicated, but most general way to make a primitive predicate.
+            If you're implementing a simple function or enumerator, use one of specialized methods
+            for implementing those.  Otherwise, it's easier to make an implementation function by
+            calling the ModeDispatch function.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="implementation">C# code that implements the driver for this predicate</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``3(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new predicate to be defined by a continuation-passing C# method.
+            This is the most complicated, but most general way to make a primitive predicate.
+            If you're implementing a simple function or enumerator, use one of specialized methods
+            for implementing those.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="implementation">C# code that implements the driver for this predicate</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``4(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new predicate to be defined by a continuation-passing C# method.
+            This is the most complicated, but most general way to make a primitive predicate.
+            If you're implementing a simple function or enumerator, use one of specialized methods
+            for implementing those.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="implementation">C# code that implements the driver for this predicate</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``5(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new predicate to be defined by a continuation-passing C# method.
+            This is the most complicated, but most general way to make a primitive predicate.
+            If you're implementing a simple function or enumerator, use one of specialized methods
+            for implementing those.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="implementation">C# code that implements the driver for this predicate</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``6(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new predicate to be defined by a continuation-passing C# method.
+            This is the most complicated, but most general way to make a primitive predicate.
+            If you're implementing a simple function or enumerator, use one of specialized methods
+            for implementing those.
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="T6">Type of the predicate's fifth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="implementation">C# code that implements the driver for this predicate</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``1(System.String,TELL.Language.SimpleTest{``0})">
+            <summary>
+            Make a new predicate defined by a C# Boolean function.
+            This predicate cannot be used to enumerate argument values that makes it true; it must be called
+            with all its inputs defined
+            </summary>
+            <typeparam name="TIn">Type of the predicate's first argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that takes the values of the arguments and returns true or false</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``2(System.String,TELL.Language.SimpleTest{``0,``1})">
+            <summary>
+            Make a new predicate defined by a C# Boolean function.
+            This predicate cannot be used to enumerate argument values that makes it true; it must be called
+            with all its inputs defined
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that takes the values of the arguments and returns true or false</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``3(System.String,TELL.Language.SimpleTest{``0,``1,``2})">
+            <summary>
+            Make a new predicate defined by a C# Boolean function.
+            This predicate cannot be used to enumerate argument values that makes it true; it must be called
+            with all its inputs defined
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that takes the values of the arguments and returns true or false</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``4(System.String,TELL.Language.SimpleTest{``0,``1,``2,``3})">
+            <summary>
+            Make a new predicate defined by a C# Boolean function.
+            This predicate cannot be used to enumerate argument values that makes it true; it must be called
+            with all its inputs defined
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that takes the values of the arguments and returns true or false</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``5(System.String,TELL.Language.SimpleTest{``0,``1,``2,``3,``4})">
+            <summary>
+            Make a new predicate defined by a C# Boolean function.
+            This predicate cannot be used to enumerate argument values that makes it true; it must be called
+            with all its inputs defined
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="TIn5">Type of the predicate's fifth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that takes the values of the arguments and returns true or false</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``6(System.String,TELL.Language.SimpleTest{``0,``1,``2,``3,``4,``5})">
+            <summary>
+            Make a new predicate defined by a C# Boolean function.
+            This predicate cannot be used to enumerate argument values that makes it true; it must be called
+            with all its inputs defined
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="TIn5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="TIn6">Type of the predicate's fifth argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that takes the values of the arguments and returns true or false</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``1(System.String,TELL.Language.Enumerator{``0})">
+            <summary>
+            Make a new predicate defined by a C# function that enumerates possible values for its
+            argument.
+            </summary>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function that enumerates possible values of the predicate's argument</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``2(System.String,TELL.Language.Enumerator{``0,``1})">
+            <summary>
+            Make a new predicate defined by a C# function that enumerates possible values for the last
+            (output) argument give the values of the other (input) arguments.
+            </summary>
+            <typeparam name="TIn">Type of the predicate's first argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the possible values of the output argument</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``3(System.String,TELL.Language.Enumerator{``0,``1,``2})">
+            <summary>
+            Make a new predicate defined by a C# function that enumerates possible values for the last
+            (output) argument give the values of the other (input) arguments.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the possible values of the output argument</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``4(System.String,TELL.Language.Enumerator{``0,``1,``2,``3})">
+            <summary>
+            Make a new predicate defined by a C# function that enumerates possible values for the last
+            (output) argument give the values of the other (input) arguments.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the possible values of the output argument</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``5(System.String,TELL.Language.Enumerator{``0,``1,``2,``3,``4})">
+            <summary>
+            Make a new predicate defined by a C# function that enumerates possible values for the last
+            (output) argument give the values of the other (input) arguments.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the possible values of the output argument</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``6(System.String,TELL.Language.Enumerator{``0,``1,``2,``3,``4,``5})">
+            <summary>
+            Make a new predicate defined by a C# function that enumerates possible values for the last
+            (output) argument give the values of the other (input) arguments.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="TIn5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the possible values of the output argument</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``1(System.String,System.Func{``0},System.Boolean)">
+            <summary>
+            Make a new predicate defined by a C# function that computes a value for the last
+            (output) argument give the values of the other (input) arguments.
+            This does not enumerate any arguments.  When called, all arguments except the last
+            must have known values, and the predicate deterministically computes a single output value.
+            </summary>
+            <typeparam name="TOut">Type of the predicate's argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Parameterless function to compute to the value of the output argument</param>
+            <param name="failOnNull">If the value of func is null (or default(TOut)), then the predicate should fail rather than return null.</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``2(System.String,System.Func{``0,``1},System.Boolean)">
+            <summary>
+            Make a new predicate defined by a C# function that computes a value for the last
+            (output) argument give the values of the other (input) arguments.
+            This does not enumerate any arguments.  When called, all arguments except the last
+            must have known values, and the predicate deterministically computes a single output value.
+            </summary>
+            <typeparam name="TIn">Type of the predicate's first argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the value of the output argument</param>
+            <param name="failOnNull">If the value of func is null (or default(TOut)), then the predicate has no value for the inputs and so should fail</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``3(System.String,System.Func{``0,``1,``2},System.Boolean)">
+            <summary>
+            Make a new predicate defined by a C# function that computes a value for the last
+            (output) argument give the values of the other (input) arguments.
+            This does not enumerate any arguments.  When called, all arguments except the last
+            must have known values, and the predicate deterministically computes a single output value.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the value of the output argument</param>
+            <param name="failOnNull">If the value of func is null (or default(TOut)), then the predicate has no value for the inputs and so should fail</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``4(System.String,System.Func{``0,``1,``2,``3},System.Boolean)">
+            <summary>
+            Make a new predicate defined by a C# function that computes a value for the last
+            (output) argument give the values of the other (input) arguments.
+            This does not enumerate any arguments.  When called, all arguments except the last
+            must have known values, and the predicate deterministically computes a single output value.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the value of the output argument</param>
+            <param name="failOnNull">If the value of func is null (or default(TOut)), then the predicate has no value for the inputs and so should fail</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``5(System.String,System.Func{``0,``1,``2,``3,``4},System.Boolean)">
+            <summary>
+            Make a new predicate defined by a C# function that computes a value for the last
+            (output) argument give the values of the other (input) arguments.
+            This does not enumerate any arguments.  When called, all arguments except the last
+            must have known values, and the predicate deterministically computes a single output value.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the value of the output argument</param>
+            <param name="failOnNull">If the value of func is null (or default(TOut)), then the predicate has no value for the inputs and so should fail</param>
+        </member>
+        <member name="M:TELL.Language.Predicate``6(System.String,System.Func{``0,``1,``2,``3,``4,``5},System.Boolean)">
+            <summary>
+            Make a new predicate defined by a C# function that computes a value for the last
+            (output) argument give the values of the other (input) arguments.
+            This does not enumerate any arguments.  When called, all arguments except the last
+            must have known values, and the predicate deterministically computes a single output value.
+            </summary>
+            <typeparam name="TIn1">Type of the predicate's first argument</typeparam>
+            <typeparam name="TIn2">Type of the predicate's second argument</typeparam>
+            <typeparam name="TIn3">Type of the predicate's third argument</typeparam>
+            <typeparam name="TIn4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="TIn5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="TOut">Type of the predicate's last (output) argument</typeparam>
+            <param name="name">Name of the predicate.</param>
+            <param name="func">Function from the input arguments to the value of the output argument</param>
+            <param name="failOnNull">If the value of func is null (or default(TOut)), then the predicate has no value for the inputs and so should fail</param>
+        </member>
+        <member name="F:TELL.Language.Not">
+            <summary>
+            Not[Goal]
+            True if Goal is false (not provable)
+            </summary>
+        </member>
+        <member name="F:TELL.Language.Once">
+            <summary>
+            Runs the goal predicate, but succeeds only once; does not look for further solutions if we backtrack.
+            </summary>
+        </member>
+        <member name="F:TELL.Language.Sum">
+            <summary>
+            True when the last argument is the sum, across all solutions to the goal, of the first argument.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.Unbound``1(TELL.Term{``0})">
+            <summary>
+            True when the argument is an unbound variable
+            This is still true if the argument is a variable that has been unified with another variable,
+            provided that other variable is also unbound.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.Bound``1(TELL.Term{``0})">
+            <summary>
+            True when the argument is not an unbound variable, i.e. is either a constant of a bound variable
+            </summary>
+        </member>
+        <member name="M:TELL.Language.Same``1(TELL.Term{``0},TELL.Term{``0})">
+            <summary>
+            Same(x,y) - note parens rather than []s
+            True if x and y can be unified.  So it really means "true if they can be made the same"
+            </summary>
+            <typeparam name="T">Type of arguments</typeparam>
+        </member>
+        <member name="M:TELL.Language.Different``1(TELL.Term{``0},TELL.Term{``0})">
+            <summary>
+            Different(x,y) - note parens rather than []s
+            True if x and y cannot be unified.  So it really means "true if they can't be made the same"
+            </summary>
+            <typeparam name="T">Type of arguments</typeparam>
+        </member>
+        <member name="M:TELL.Language.Member``1(TELL.Term{``0},TELL.Term{System.Collections.Generic.IList{``0}})">
+            <summary>
+            Member(elt, list)    - note ()s rather than []s
+            True if elt is in list.
+            </summary>
+            <typeparam name="T">Type of list elements</typeparam>
+        </member>
+        <member name="M:TELL.Language.Break``1(TELL.Term{``0})">
+            <summary>
+            Breakpoint: executing this drops the program in the debugger so you can see the vlaue of arg.
+            </summary>
+            <typeparam name="T">Type of argument</typeparam>
+            <param name="arg">Argument.  Break ignores the argument, but passing something here gives you a convenient way to inspect the object while the program is running.</param>
+        </member>
+        <member name="F:TELL.Language.And">
+            <summary>
+            True when all of its argument goals are true
+            </summary>
+        </member>
+        <member name="M:TELL.Language.ModeDispatch``1(System.String,System.Predicate{``0},System.Func{System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Utility function to do the case analysis for one-argument predicates
+            </summary>
+            <typeparam name="T">Argument type for the predicate</typeparam>
+            <param name="name">Name of the predicate (For error messages)</param>
+            <param name="inMode">Implementation for when a value is passed in to the predicate rather than an unbound variable</param>
+            <param name="outMode">Implementation for when the input is an unbound variable</param>
+        </member>
+        <member name="M:TELL.Language.ModeDispatch``2(System.String,System.Func{``0,``1,System.Boolean},System.Func{``0,System.Collections.Generic.IEnumerable{``1}},System.Func{``1,System.Collections.Generic.IEnumerable{``0}},System.Func{System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1}}})">
+            <summary>
+            Utility function to do the case analysis for two-argument predicates
+            </summary>
+            <typeparam name="T1">C# type of the first argument to the predicate</typeparam>
+            <typeparam name="T2">C# type of the second argument to the predicate</typeparam>
+            <param name="name">Name of the predicate (for error messages)</param>
+            <param name="inInMode">Implementation for when both arguments are instantiated</param>
+            <param name="inOutMode">Implementation for when only the first argument is instantiated</param>
+            <param name="outInMode">Implementation for when only the second argument is instantiated</param>
+            <param name="outOutMode">Implementation for when neither argument is instantiated</param>
+        </member>
+        <member name="M:TELL.Language.FunctionWrapper``1(System.Func{``0},System.Boolean)">
+            <summary>
+            Converts a C# Func to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Language.FunctionWrapper``2(System.Func{``0,``1},System.String,System.Boolean)">
+            <summary>
+            Converts a C# Func to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Language.FunctionWrapper``3(System.Func{``0,``1,``2},System.String,System.Boolean)">
+            <summary>
+            Converts a C# Func to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Language.FunctionWrapper``4(System.Func{``0,``1,``2,``3},System.String,System.Boolean)">
+            <summary>
+            Converts a C# Func to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Language.FunctionWrapper``5(System.Func{``0,``1,``2,``3,``4},System.String,System.Boolean)">
+            <summary>
+            Converts a C# Func to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Language.FunctionWrapper``6(System.Func{``0,``1,``2,``3,``4,``5},System.String,System.Boolean)">
+            <summary>
+            Converts a C# Func to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.SimpleTest`1">
+            <summary>
+            A function that implements a predicate that just tests its arguments without
+            filling any of them in.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.TestWrapper``1(TELL.Language.SimpleTest{``0},System.String)">
+            <summary>
+            Converts a C# predicate, in the sense of function from arguments to a Boolean, to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.SimpleTest`2">
+            <summary>
+            A function that implements a predicate that just tests its arguments without
+            filling any of them in.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.TestWrapper``2(TELL.Language.SimpleTest{``0,``1},System.String)">
+            <summary>
+            Converts a C# predicate, in the sense of function from arguments to a Boolean, to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.SimpleTest`3">
+            <summary>
+            A function that implements a predicate that just tests its arguments without
+            filling any of them in.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.TestWrapper``3(TELL.Language.SimpleTest{``0,``1,``2},System.String)">
+            <summary>
+            Converts a C# predicate, in the sense of function from arguments to a Boolean, to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.SimpleTest`4">
+            <summary>
+            A function that implements a predicate that just tests its arguments without
+            filling any of them in.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.TestWrapper``4(TELL.Language.SimpleTest{``0,``1,``2,``3},System.String)">
+            <summary>
+            Converts a C# predicate, in the sense of function from arguments to a Boolean, to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.SimpleTest`5">
+            <summary>
+            A function that implements a predicate that just tests its arguments without
+            filling any of them in.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.TestWrapper``5(TELL.Language.SimpleTest{``0,``1,``2,``3,``4},System.String)">
+            <summary>
+            Converts a C# predicate, in the sense of function from arguments to a Boolean, to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.SimpleTest`6">
+            <summary>
+            A function that implements a predicate that just tests its arguments without
+            filling any of them in.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.TestWrapper``6(TELL.Language.SimpleTest{``0,``1,``2,``3,``4,``5},System.String)">
+            <summary>
+            Converts a C# predicate, in the sense of function from arguments to a Boolean, to the driver code for a predicate
+            </summary>
+        </member>
+        <member name="T:TELL.Language.Enumerator`1">
+            <summary>
+            A function that implements a predicate that enumerates values of its (only) argument.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.EnumeratorWrapper``1(TELL.Language.Enumerator{``0})">
+            <summary>
+            Makes a driver function that implements a predicate that enumerates values of its (only) argument.
+            </summary>
+        </member>
+        <member name="T:TELL.Language.Enumerator`2">
+            <summary>
+            A function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.EnumeratorWrapper``2(TELL.Language.Enumerator{``0,``1},System.String)">
+            <summary>
+            Makes a driver function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="T:TELL.Language.Enumerator`3">
+            <summary>
+            A function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.EnumeratorWrapper``3(TELL.Language.Enumerator{``0,``1,``2},System.String)">
+            <summary>
+            Makes a driver function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="T:TELL.Language.Enumerator`4">
+            <summary>
+            A function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.EnumeratorWrapper``4(TELL.Language.Enumerator{``0,``1,``2,``3},System.String)">
+            <summary>
+            Makes a driver function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="T:TELL.Language.Enumerator`5">
+            <summary>
+            A function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.EnumeratorWrapper``5(TELL.Language.Enumerator{``0,``1,``2,``3,``4},System.String)">
+            <summary>
+            Makes a driver function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="T:TELL.Language.Enumerator`6">
+            <summary>
+            A function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="M:TELL.Language.EnumeratorWrapper``6(TELL.Language.Enumerator{``0,``1,``2,``3,``4,``5},System.String)">
+            <summary>
+            Makes a driver function that implements a predicate that enumerates values of its last argument
+            given values of its other arguments.
+            </summary>
+        </member>
+        <member name="T:TELL.Predicate">
+            <summary>
+            Represents a predicate you can call as a goal.
+            A predicate has a name, and a set of rules for when it can be true.
+            </summary>
+        </member>
+        <member name="F:TELL.Predicate.Name">
+            <summary>
+            Human-readable name for this predicate
+            </summary>
+        </member>
+        <member name="F:TELL.Predicate.DocString">
+            <summary>
+            Documentation, if provided
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate.ManualEntry">
+            <summary>
+            The name, arguments, and documentation for this predicate
+            </summary>
+        </member>
+        <member name="F:TELL.Predicate.Implementation">
+            <summary>
+            Code to call when trying to prove a goal involving this predicate
+            </summary>
+        </member>
+        <member name="F:TELL.Predicate.IsPrimitive">
+            <summary>
+            If true, this is a predicate directly implemented in C#/MSIL.  If false, it's defined by rules.
+            </summary>
+        </member>
+        <member name="F:TELL.Predicate.DefaultVariables">
+            <summary>
+            Arguments to use for the goal is you say Predicate.If(body)
+            For primitive predicates, which also gives the REPL a way of knowing the predicate's
+            expected argument types.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation,TELL.Term[])">
+            <summary>
+            Make a new predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a new predicate to be defined in terms of rules.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultVariables"></param>
+        </member>
+        <member name="F:TELL.Predicate.Rules">
+            <summary>
+            Rules that can be used to prove goals involving this predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate.AddRule(TELL.Interpreter.Rule)">
+            <summary>
+            Add a new rule to the predicate
+            </summary>
+            <param name="r"></param>
+        </member>
+        <member name="M:TELL.Predicate.GetGoal(TELL.Term[])">
+            <summary>
+            Make a goal (call) to this predicate given an array of arguments
+            </summary>
+            <param name="args">Term expressions for the arguments</param>
+            <returns>Goal object</returns>
+        </member>
+        <member name="M:TELL.Predicate.CastArgument``1(TELL.Term,System.Int32)">
+            <summary>
+            Check that argument is instantiated to a value of the right type and return it caast to that type
+            </summary>
+            <param name="arg">Argument (variable or object)</param>
+            <param name="argumentNumber">Position in argument list</param>
+            <typeparam name="T">Expected type</typeparam>
+            <returns>Value of type T</returns>
+            <exception cref="T:System.ArgumentException">If arg is uninstantiated (unbound) or of the wrong type</exception>
+        </member>
+        <member name="M:TELL.Predicate.VerifyCsvColumnNames(System.String[])">
+            <summary>
+            Verify that the header row of a CSV file matches the declared variable names
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate.LoadCsv(System.String)">
+            <summary>
+            Load a set of facts from a CSV file
+            </summary>
+            <param name="path">path to the file</param>
+        </member>
+        <member name="M:TELL.Predicate.CsvRowToFact(System.String[])">
+            <summary>
+            Convert a CSV row loaded from a file into a Goal that can be asserted as a fact.
+            </summary>
+        </member>
+        <member name="T:TELL.Predicate`1">
+            <summary>
+            Single-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's argument</typeparam>
+        </member>
+        <member name="P:TELL.Predicate`1.Item(TELL.Term{`0})">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`1.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`1.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a predicate for use with rules
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`1.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`1.If(TELL.Goal[])">
+            <summary>
+            Add a rule to the predicate, using the default arguments as the rule's head (i.e. goal
+            </summary>
+            <param name="body">Subgoals to call to prove the head goal</param>
+            <returns>Original predicate</returns>
+            <exception cref="T:System.InvalidOperationException">If this is a primitive predicate</exception>
+        </member>
+        <member name="M:TELL.Predicate`1.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`1.FromFile(System.String)">
+            <summary>
+            Load a set of facts from a CSV file into this predicate.
+            </summary>
+            <param name="path">Path to the CSV file</param>
+            <returns>this predicate</returns>
+        </member>
+        <member name="M:TELL.Predicate`1.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.Predicate`2">
+            <summary>
+            Two-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+        </member>
+        <member name="P:TELL.Predicate`2.Item(TELL.Term{`0},TELL.Term{`1})">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`2.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`2.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a predicate for use with rules
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`2.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`2.If(TELL.Goal[])">
+            <summary>
+            Add a rule to the predicate, using the default arguments as the rule's head (i.e. goal
+            </summary>
+            <param name="body">Subgoals to call to prove the head goal</param>
+            <returns>Original predicate</returns>
+            <exception cref="T:System.InvalidOperationException">If this is a primitive predicate</exception>
+        </member>
+        <member name="M:TELL.Predicate`2.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`2.FromFile(System.String)">
+            <summary>
+            Load a set of facts from a CSV file into this predicate.
+            </summary>
+            <param name="path">Path to the CSV file</param>
+            <returns>this predicate</returns>
+        </member>
+        <member name="M:TELL.Predicate`2.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.Predicate`3">
+            <summary>
+            Three-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+        </member>
+        <member name="P:TELL.Predicate`3.Item(TELL.Term{`0},TELL.Term{`1},TELL.Term{`2})">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`3.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`3.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a predicate for use with rules
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`3.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`3.If(TELL.Goal[])">
+            <summary>
+            Add a rule to the predicate, using the default arguments as the rule's head (i.e. goal
+            </summary>
+            <param name="body">Subgoals to call to prove the head goal</param>
+            <returns>Original predicate</returns>
+            <exception cref="T:System.InvalidOperationException">If this is a primitive predicate</exception>
+        </member>
+        <member name="M:TELL.Predicate`3.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`3.FromFile(System.String)">
+            <summary>
+            Load a set of facts from a CSV file into this predicate.
+            </summary>
+            <param name="path">Path to the CSV file</param>
+            <returns>this predicate</returns>
+        </member>
+        <member name="M:TELL.Predicate`3.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.Predicate`4">
+            <summary>
+            Four-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+        </member>
+        <member name="P:TELL.Predicate`4.Item(TELL.Term{`0},TELL.Term{`1},TELL.Term{`2},TELL.Term{`3})">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`4.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`4.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a predicate for use with rules
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`4.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`4.If(TELL.Goal[])">
+            <summary>
+            Add a rule to the predicate, using the default arguments as the rule's head (i.e. goal
+            </summary>
+            <param name="body">Subgoals to call to prove the head goal</param>
+            <returns>Original predicate</returns>
+            <exception cref="T:System.InvalidOperationException">If this is a primitive predicate</exception>
+        </member>
+        <member name="M:TELL.Predicate`4.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`4.FromFile(System.String)">
+            <summary>
+            Load a set of facts from a CSV file into this predicate.
+            </summary>
+            <param name="path">Path to the CSV file</param>
+            <returns>this predicate</returns>
+        </member>
+        <member name="M:TELL.Predicate`4.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.Predicate`5">
+            <summary>
+            Five-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+        </member>
+        <member name="P:TELL.Predicate`5.Item(TELL.Term{`0},TELL.Term{`1},TELL.Term{`2},TELL.Term{`3},TELL.Term{`4})">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`5.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`5.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a predicate for use with rules
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`5.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`5.If(TELL.Goal[])">
+            <summary>
+            Add a rule to the predicate, using the default arguments as the rule's head (i.e. goal
+            </summary>
+            <param name="body">Subgoals to call to prove the head goal</param>
+            <returns>Original predicate</returns>
+            <exception cref="T:System.InvalidOperationException">If this is a primitive predicate</exception>
+        </member>
+        <member name="M:TELL.Predicate`5.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`5.FromFile(System.String)">
+            <summary>
+            Load a set of facts from a CSV file into this predicate.
+            </summary>
+            <param name="path">Path to the CSV file</param>
+            <returns>this predicate</returns>
+        </member>
+        <member name="M:TELL.Predicate`5.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.Predicate`6">
+            <summary>
+            Six-argument predicate
+            </summary>
+            <typeparam name="T1">Type of the predicate's first argument</typeparam>
+            <typeparam name="T2">Type of the predicate's second argument</typeparam>
+            <typeparam name="T3">Type of the predicate's third argument</typeparam>
+            <typeparam name="T4">Type of the predicate's fourth argument</typeparam>
+            <typeparam name="T5">Type of the predicate's fifth argument</typeparam>
+            <typeparam name="T6">Type of the predicate's sixth argument</typeparam>
+        </member>
+        <member name="P:TELL.Predicate`6.Item(TELL.Term{`0},TELL.Term{`1},TELL.Term{`2},TELL.Term{`3},TELL.Term{`4},TELL.Term{`5})">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`6.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`6.#ctor(System.String,TELL.Term[])">
+            <summary>
+            Make a predicate for use with rules
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`6.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.Predicate`6.If(TELL.Goal[])">
+            <summary>
+            Add a rule to the predicate, using the default arguments as the rule's head (i.e. goal
+            </summary>
+            <param name="body">Subgoals to call to prove the head goal</param>
+            <returns>Original predicate</returns>
+            <exception cref="T:System.InvalidOperationException">If this is a primitive predicate</exception>
+        </member>
+        <member name="M:TELL.Predicate`6.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Predicate`6.FromFile(System.String)">
+            <summary>
+            Load a set of facts from a CSV file into this predicate.
+            </summary>
+            <param name="path">Path to the CSV file</param>
+            <returns>this predicate</returns>
+        </member>
+        <member name="M:TELL.Predicate`6.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.VariadicPredicate`1">
+            <summary>
+            A predicate that takes a variable number of arguments, all of which are type T.
+            </summary>
+            <typeparam name="T">Type of the predicate's arguments</typeparam>
+        </member>
+        <member name="P:TELL.VariadicPredicate`1.Item(TELL.Term{`0}[])">
+            <summary>
+            Make a Goal from this predicate with the specified argument value.
+            </summary>
+        </member>
+        <member name="M:TELL.VariadicPredicate`1.GetGoal(TELL.Term[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.VariadicPredicate`1.CsvRowToFact(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.VariadicPredicate`1.#ctor(System.String,TELL.Interpreter.Prover.PredicateImplementation)">
+            <summary>
+            Make a new primitive predicate
+            </summary>
+        </member>
+        <member name="M:TELL.VariadicPredicate`1.Documentation(System.String)">
+            <summary>
+            Add documentation to the predicate
+            </summary>
+            <param name="docString">Documentation to be stored with the predicate</param>
+            <returns>Original predicate</returns>
+        </member>
+        <member name="T:TELL.Program">
+            <summary>
+            A container for a set of predicates
+            This is basically a namespace for predicates.
+            It's presently only used by the REPL.  So if you aren't using that, you don't need a Program.
+            </summary>
+        </member>
+        <member name="F:TELL.Program.LoadingPrograms">
+            <summary>
+            The top of the stack is the program to which new predicates should be added.
+            It's a stack out of paranoia that something bad will happen if multiple programs are loaded and they get mixed.
+            </summary>
+        </member>
+        <member name="F:TELL.Program.predicates">
+            <summary>
+            Predicates and their names
+            </summary>
+        </member>
+        <member name="P:TELL.Program.Predicates">
+            <summary>
+            All Predicates defined in this Program
+            </summary>
+        </member>
+        <member name="F:TELL.Program.Name">
+            <summary>
+            Name of the program, for debugging
+            </summary>
+        </member>
+        <member name="P:TELL.Program.Repl">
+            <summary>
+            Return a REPL associated with this program, creating it if necessary.
+            </summary>
+        </member>
+        <member name="M:TELL.Program.#ctor(System.String)">
+            <summary>
+            Make a new Program.  A Program is a container for predicates that are to be used with a Repl.
+            To use: make a Program. call Program.Begin(), make a bunch of predicates, then call Program.End().
+            Then you can access those predicates from the Repl
+            </summary>
+            <param name="name">Name of the program, for debugging purposes</param>
+        </member>
+        <member name="M:TELL.Program.Begin">
+            <summary>
+            Start defining predicates for the program.  All predicates created between calling and calling End() will be added
+            to the program.
+            </summary>
+        </member>
+        <member name="M:TELL.Program.End">
+            <summary>
+            Stop adding new predicates to this Program.
+            </summary>
+        </member>
+        <member name="P:TELL.Program.Item(System.String)">
+            <summary>
+            The predicate with the specified name
+            </summary>
+        </member>
+        <member name="M:TELL.Program.PredicateNamed(System.String)">
+            <summary>
+            The predicate with the specified name, or null if none is defined.
+            </summary>
+        </member>
+        <member name="M:TELL.Repl.Parser.SymbolTable.GetVariable(System.String,TELL.Term)">
+            <summary>
+            Get the variable with this name, if one has already been made.  Otherwise, make one of the same type as defaultArg.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultArg"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TELL.Repl.Repl">
+            <summary>
+            Support for Read/Evaluate/Print/Loops (REPLs), i.e. command line interpreters
+            This converts strings containing code to executable queries and runs them, returning the results
+            </summary>
+        </member>
+        <member name="F:TELL.Repl.Repl.Program">
+            <summary>
+            The collection of predicates to allow the user to call
+            </summary>
+        </member>
+        <member name="F:TELL.Repl.Repl.parser">
+            <summary>
+            Parser object to use to parse queries
+            </summary>
+        </member>
+        <member name="F:TELL.Repl.Repl.ResolveConstant">
+            <summary>
+            Called when the user types a term of the form $string or $"string".  Maps string to a Term.
+            Fill this in to handle whatever application-specific term syntax you need.
+            </summary>
+        </member>
+        <member name="F:TELL.Repl.Repl.MaxSolutions">
+            <summary>
+            Maximum number of solutions to return to a query
+            </summary>
+        </member>
+        <member name="M:TELL.Repl.Repl.NullConstantResolver(System.String)">
+            <summary>
+            Default constant resolver to use
+            </summary>
+        </member>
+        <member name="M:TELL.Repl.Repl.#ctor(TELL.Program,System.Func{System.String,TELL.Term})">
+            <summary>
+            Make a new Repl.
+            </summary>
+            <param name="program">Collection of predicates to be callable form the repl</param>
+            <param name="resolveConstant">Constant resolver to use for $string terms, or null if $string shouldn't be supported</param>
+        </member>
+        <member name="M:TELL.Repl.Repl.Solutions(System.String)">
+            <summary>
+            Find all solutions (up to MaxSolutions) to query and return them as a sequence of arrays,
+            each containing the values of each variable appearing in the query, in left-to-right order.
+            </summary>
+            <param name="goalString">String containing the query</param>
+            <returns>List of solutions</returns>
+            <exception cref="T:System.Exception">If code throws and exception or there is a syntax error</exception>
+        </member>
+        <member name="T:TELL.Constant`1">
+            <summary>
+            Terms that represent constants of type T
+            These always have the same value every time the code is run, as opposed to Vars, where they
+            have to be looked up at runtime in the binding list.
+            </summary>
+        </member>
+        <member name="F:TELL.Constant`1.Value">
+            <summary>
+            The actual constant
+            </summary>
+        </member>
+        <member name="P:TELL.Constant`1.IsVariable">
+            <summary>
+            This is not a variable
+            </summary>
+        </member>
+        <member name="M:TELL.Constant`1.#ctor(`0)">
+            <summary>
+            Make a Constant object to wrap the specified constant
+            </summary>
+            <param name="value">value to wrap</param>
+        </member>
+        <member name="M:TELL.Constant`1.Instantiate(System.Collections.Generic.Dictionary{TELL.Term,TELL.Term})">
+            <summary>
+            Called during Rule instantiation (see Rule.Instantiate).
+            Just returns the value, unless the value is a goal, in which case we instantiate it.
+            </summary>
+            <param name="vars">Variable substitutions to perform.  Only relevant if T=AnyGoal</param>
+        </member>
+        <member name="M:TELL.Constant`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:TELL.IVariable">
+            <summary>
+            Untyped base interface to for all Var[T]T.
+            THE ONLY CLASS THAT SHOULD IMPLEMENT THIS IS Var[T]!  Right now, it's only used to ask a variable
+            what it's name is (you can't access the Name field without casting it to Var[T], which you can't
+            do if you don't know T at compile time).
+            </summary>
+        </member>
+        <member name="P:TELL.IVariable.VariableName">
+            <summary>
+            Name of the variable
+            </summary>
+        </member>
+        <member name="T:TELL.Term">
+            <summary>
+            Base class of all Terms.  Terms are expressions representing arguments to predicates.
+            TELL is interpreted, and so its data structures are essentially parse trees of the code
+            it's running. Terms represent the arguments to predicates within those data structures.
+            Terms are typed and can either be variables (type Var[T]), in which case they're placeholders
+            for values that will be determined at runtime, or constants (type Constant[T]), in which
+            case they're fixed.
+            </summary>
+        </member>
+        <member name="P:TELL.Term.IsVariable">
+            <summary>
+            True if this Term is a variable.
+            This is faster than doing a type check for IVariable.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:TELL.Term.Instantiate(System.Collections.Generic.Dictionary{TELL.Term,TELL.Term})">
+            <summary>
+            Return the instantiated form of this term to place in an instantiated goal.
+            See Rule.Instantiate for more info.
+            </summary>
+            <param name="vars">Variable mapping.  It's typed as AnyTerm because there's no base class for just the variables.</param>
+        </member>
+        <member name="M:TELL.Term.Clone">
+            <summary>
+            Used to clone variables; It's virtual method here because of typing issues.
+            </summary>
+        </member>
+        <member name="P:TELL.Term.Type">
+            <summary>
+            Type of this term
+            </summary>
+        </member>
+        <member name="M:TELL.Term.MakeVariable(System.String)">
+            <summary>
+            Make a variable of the same type as this term
+            </summary>
+        </member>
+        <member name="T:TELL.Term`1">
+            <summary>
+            Base class for terms whose values are type T.
+            </summary>
+            <typeparam name="T">Type of the value of the variable</typeparam>
+        </member>
+        <member name="M:TELL.Term`1.op_Implicit(`0)~TELL.Term{`0}">
+            <summary>
+            Automatically convert C# constant of type T to Constant terms
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:TELL.Term`1.op_Equality(TELL.Term{`0},TELL.Term{`0})">
+            <summary>
+            True when the terms have the same value
+            </summary>
+        </member>
+        <member name="M:TELL.Term`1.op_Inequality(TELL.Term{`0},TELL.Term{`0})">
+            <summary>
+            True when the terms have different values
+            </summary>
+        </member>
+        <member name="P:TELL.Term`1.Type">
+            <summary>
+            Return the type object for this Term's type
+            </summary>
+        </member>
+        <member name="M:TELL.Term`1.MakeVariable(System.String)">
+            <summary>
+            Make a variable of the same type as this term, whether this term is a variable or not.
+            </summary>
+            <param name="name">Name to give to the variable</param>
+        </member>
+        <member name="T:TELL.Var`1">
+            <summary>
+            A variable in a TELL rule.
+            These are the objects stored in a Rule or Predicate when an argument is a variable.
+            They are also used as keys Substitutions, which map Vars to their run-time values.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:TELL.Var`1.#ctor(System.String)">
+            <summary>
+            Make a new variable
+            </summary>
+            <param name="name">Human-readable name of the variable</param>
+        </member>
+        <member name="F:TELL.Var`1.Name">
+            <summary>
+            Name of the variable, for debugging purposes
+            </summary>
+        </member>
+        <member name="F:TELL.Var`1.SerialNumberCounter">
+            <summary>
+            Serial number for the next variable we create
+            </summary>
+        </member>
+        <member name="F:TELL.Var`1.SerialNumber">
+            <summary>
+            Unique number attached to this variable so if there are two variables with the same name,
+            you can tell them apart in the debugger.  This is added to the end of the name when it's
+            printed so you can tell which variable you're seeing.
+            </summary>
+        </member>
+        <member name="P:TELL.Var`1.IsVariable">
+            <summary>
+            Yes, this is a variable
+            </summary>
+        </member>
+        <member name="M:TELL.Var`1.op_Explicit(System.String)~TELL.Var{`0}">
+            <summary>
+            Slightly less cumbersome way of making a variable
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:TELL.Var`1.Clone">
+            <summary>
+            Make a new variable with exactly the same name
+            </summary>
+        </member>
+        <member name="M:TELL.Var`1.Instantiate(System.Collections.Generic.Dictionary{TELL.Term,TELL.Term})">
+            <inheritdoc />
+        </member>
+        <member name="M:TELL.Var`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="P:TELL.Var`1.VariableName">
+            <summary>
+            Used through the IVariable interface to get the name of the variable when you don't know its type
+            </summary>
+        </member>
+    </members>
+</doc>

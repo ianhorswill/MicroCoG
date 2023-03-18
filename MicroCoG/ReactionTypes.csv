@@ -1,0 +1,13 @@
+﻿action,response,spreadTo
+"violence","violence-reaction",Family
+"killing","killing-reaction",Family
+"propdamage","propdamage-reaction",Family
+"biz-forceclose-cause","biz-forceclose-cause-reaction",Family
+"quest-protection-pos","harassed-family-reaction-pos",Family
+"quest-protection-neg","harassed-family-reaction-neg",Family
+"goon-trouble-pos","harassed-family-reaction-pos",Family
+"goon-trouble-neg","harassed-family-reaction-neg",Family
+"debtor-paycash-some","debtor-paycash-some-reaction",Family
+"debtor-paycash-full","debtor-paycash-full-reaction",Family
+"debtor-payother","debtor-payother-reaction",Family
+"quest-complete","quest-complete-reaction",_

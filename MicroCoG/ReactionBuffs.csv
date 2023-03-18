@@ -1,0 +1,16 @@
+﻿Response,RelationshipClass,RelationshipType,Buff
+violence-reaction,_,_,-1
+violence-reaction,family,_,-1
+killing-reaction,_,_,-2
+killing-reaction,family,_,-2
+killing-reaction,family,mother,-2
+killing-reaction,family,father,-2
+killing-reaction,family,child,-2
+propdamage-reaction,_,_,-1
+biz-forceclose-cause-reaction,_,_,-1
+harassed-family-reaction-pos,_,_,1
+harassed-family-reaction-neg,_,_,-1
+debtor-paycash-some-reaction,_,_,1
+debtor-paycash-full-reaction,_,_,2
+debtor-payother-reaction,_,_,1
+quest-complete-reaction,_,_,1
